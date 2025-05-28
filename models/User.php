@@ -2,129 +2,117 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
-{
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-    public $status;
+use Yii;
 
-    private static $users = [
-        '1' => [
-            'id' => '1',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-            'status' => 'admin',
-        ],
-        '2' => [
-            'id' => '2',
-            'username' => 'manager',
-            'password' => 'manager',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-            'status' => 'manager',
-        ],
-        '3' => [
-            'id' => '3',
-            'username' => 'programer',
-            'password' => 'programer',
-            'authKey' => 'test102key',
-            'accessToken' => '102-token',
-            'status' => 'programer',
-        ],
-    ];
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $login Логін
+ * @property string|null $password Пароль
+ * @property string|null $access_token
+ * @property string|null $salt Сіль
+ * @property bool|null $new Чи новий користувач
+ * @property bool|null $admin Чи адмін
+ * @property bool|null $manager Чи менеджер
+ * @property bool|null $programmer Чи програміст
+ */
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+{
 
 
     /**
      * {@inheritdoc}
      */
+    public static function tableName()
+    {
+        return 'user';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['password', 'access_token', 'salt'], 'default', 'value' => null],
+            [['new'], 'default', 'value' => 1],
+            [['programmer'], 'default', 'value' => 0],
+            [['username', 'login'], 'required'],
+            [['new', 'admin', 'manager', 'programmer'], 'boolean'],
+            [['username', 'login'], 'string', 'max' => 255],
+            [['password', 'access_token'], 'string', 'max' => 64],
+            [['salt'], 'string', 'max' => 32],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'login' => 'Login',
+            'password' => 'Password',
+            'access_token' => 'Access Token',
+            'salt' => 'Salt',
+            'new' => 'New',
+            'admin' => 'Admin',
+            'manager' => 'Manager',
+            'programmer' => 'Programmer',
+        ];
+    }
+
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return static::findOne($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::findOne(['access_token' => $token]);
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::findOne(['login' => $username]); // login — це твій логін
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return null; // або $this->auth_key якщо додаси поле
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return false; // або порівняння з $this->auth_key
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return $this->password === hash('sha256', $this->salt . $password);
     }
 
     public function isAdmin()
     {
-        return $this->status === 'admin';
+        return $this->admin === true;
     }
 
     public function isManager()
     {
-        return $this->status === 'manager';
+        return $this->manager === true || $this->admin === true;
     }
-
-    public function isProgramer()
+    
+    public function isProgrammer()
     {
-        return $this->status === 'programer';
+        return $this->programmer === true || $this->admin === true;
     }
 }

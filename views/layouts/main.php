@@ -47,18 +47,18 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         ]
     ];
 
-    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'admin') {
-        // $links['items'][] = ['label' => 'Admin', 'url' => ['/admin/index']];
-    }
-    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'manager') {
-        $links['items']['projects'] = ['label' => 'Проекти', 'url' => ['/projects/index']];
-        $links['items']['tasks'] = ['label' => 'Завдання', 'url' => ['/tasks/index']];
-        $links['items']['issues'] = ['label' => 'Проблеми', 'url' => ['/issues/index']];
-    }
-    if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'programer') {
-        $links['items']['projects'] = ['label' => 'Проекти', 'url' => ['/projects/index']];
-        $links['items']['tasks'] = ['label' => 'Завдання', 'url' => ['/tasks/index']];
-    }
+    // if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'admin') {
+    //     // $links['items'][] = ['label' => 'Admin', 'url' => ['/admin/index']];
+    // }
+    // if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'manager') {
+    //     $links['items']['projects'] = ['label' => 'Проекти', 'url' => ['/projects/index']];
+    //     $links['items']['tasks'] = ['label' => 'Завдання', 'url' => ['/tasks/index']];
+    //     $links['items']['issues'] = ['label' => 'Проблеми', 'url' => ['/issues/index']];
+    // }
+    // if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'programer') {
+    //     $links['items']['projects'] = ['label' => 'Проекти', 'url' => ['/projects/index']];
+    //     $links['items']['tasks'] = ['label' => 'Завдання', 'url' => ['/tasks/index']];
+    // }
 
     if (!Yii::$app->user->isGuest) {
         $links['items'][] = [

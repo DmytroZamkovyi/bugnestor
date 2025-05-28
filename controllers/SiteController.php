@@ -83,6 +83,12 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $user = Yii::$app->user->identity;
+
+            if ($user->new) {
+                return $this->redirect(['site/set-password']);
+            }
+
             return $this->goBack();
         }
 
@@ -131,4 +137,27 @@ class SiteController extends Controller
     // {
     //     return $this->render('about');
     // }
+
+    public function actionSetPassword()
+{
+    /** @var \app\models\User $user */
+    $user = Yii::$app->user->identity;
+
+    if (!$user->new) {
+        return $this->goHome();
+    }
+
+    $model = new \app\models\SetPasswordForm();
+    if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        $user->salt = $model->generateSalt();
+        $user->password = hash('sha256', $user->salt . $model->password);
+        $user->new = false;
+        if ($user->save()) {
+            Yii::$app->session->setFlash('success', 'Пароль успішно змінено.');
+            return $this->goHome();
+        }
+    }
+
+    return $this->render('set-password', ['model' => $model]);
+}
 }
