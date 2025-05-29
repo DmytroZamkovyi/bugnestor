@@ -50,6 +50,10 @@ $config = [
             'rules' => [
             ],
         ],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'booleanFormat' => ['Ні', 'Так'],
+        ],
     ],
     'params' => $params,
     

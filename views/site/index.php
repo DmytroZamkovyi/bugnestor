@@ -9,5 +9,5 @@ $this->title = 'My Yii Application';
 </div>
 
 <script>
-    window.location.href = '/issues';
+    // window.location.href = '/issues';
 </script>

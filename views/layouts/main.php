@@ -22,81 +22,80 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
+
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
+
 <body class="d-flex flex-column h-100">
-<?php $this->beginBody() ?>
+    <?php $this->beginBody() ?>
 
-<header id="header">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
-    ]);
+    <header id="header">
+        <?php
+        NavBar::begin([
+            'brandLabel' => Yii::$app->name,
+            'brandUrl' => Yii::$app->homeUrl,
+            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        ]);
 
-    $links = [
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            // ['label' => 'Home', 'url' => ['/site/index']],
-
-        ]
-    ];
-
-    // if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'admin') {
-    //     // $links['items'][] = ['label' => 'Admin', 'url' => ['/admin/index']];
-    // }
-    // if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'manager') {
-    //     $links['items']['projects'] = ['label' => 'Проекти', 'url' => ['/projects/index']];
-    //     $links['items']['tasks'] = ['label' => 'Завдання', 'url' => ['/tasks/index']];
-    //     $links['items']['issues'] = ['label' => 'Проблеми', 'url' => ['/issues/index']];
-    // }
-    // if (!Yii::$app->user->isGuest && Yii::$app->user->identity->status === 'programer') {
-    //     $links['items']['projects'] = ['label' => 'Проекти', 'url' => ['/projects/index']];
-    //     $links['items']['tasks'] = ['label' => 'Завдання', 'url' => ['/tasks/index']];
-    // }
-
-    if (!Yii::$app->user->isGuest) {
-        $links['items'][] = [
-            'label' => 'Вийти (' . Yii::$app->user->identity->username . ')',
-            'url' => ['/site/logout'],
-            'linkOptions' => ['data-method' => 'post']
+        $links = [
+            'options' => ['class' => 'navbar-nav'],
+            'items' => [],
         ];
-    } else {
-        $links['items']['issues'] = ['label' => 'Проблеми', 'url' => ['/issues/index']];
-        $links['items'][] = ['label' => 'Увійти', 'url' => ['/site/login']];
-    }
-    
-    echo Nav::widget($links);
-    NavBar::end();
-    ?>
-</header>
 
-<main id="main" class="flex-shrink-0" role="main">
-    <div class="container">
-        <?php if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-        <?php endif ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</main>
+        if (!Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->identity;
 
-<footer id="footer" class="mt-auto py-3 bg-light">
-    <div class="container">
-        <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; Dmytro Zamkovyi <?= date('Y') ?></div>
-            <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
+            if ($user->isAdmin()) {
+                $links['items'][] = ['label' => 'Користувачі', 'url' => ['/user']];
+                $links['items'][] = ['label' => 'Проекти', 'url' => ['/project']];
+            }
+        }
+
+        if (!Yii::$app->user->isGuest) {
+            $links['items'][] = [
+                'label' => 'Вийти (' . Yii::$app->user->identity->username . ')',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post']
+            ];
+        } else {
+            $links['items']['issues'] = ['label' => 'Проблеми', 'url' => ['/issues']];
+            $links['items'][] = ['label' => 'Увійти', 'url' => ['/site/login']];
+        }
+
+        echo Nav::widget($links);
+        NavBar::end();
+        ?>
+    </header>
+
+    <main id="main" class="flex-shrink-0" role="main">
+        <div class="container">
+            <?php if (!empty($this->params['breadcrumbs'])): ?>
+                <?= Breadcrumbs::widget([
+                    'homeLink' => ['label' => 'Головна', 'url' => Yii::$app->homeUrl],
+                    'links' => $this->params['breadcrumbs'],
+                ]) ?>
+            <?php endif ?>
+            <?= Alert::widget() ?>
+            <?= $content ?>
         </div>
-    </div>
-</footer>
+    </main>
 
-<?php $this->endBody() ?>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <footer id="footer" class="mt-auto py-3 bg-light">
+        <div class="container">
+            <div class="row text-muted">
+                <div class="col-md-6 text-center text-md-start">&copy; Dmytro Zamkovyi <?= date('Y') ?></div>
+                <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
+            </div>
+        </div>
+    </footer>
+
+    <?php $this->endBody() ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </body>
+
 </html>
 <?php $this->endPage() ?>

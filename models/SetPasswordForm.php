@@ -25,4 +25,6 @@ class SetPasswordForm extends Model
         $username = \Yii::$app->user->identity->username;
         return md5($ip . $time . $username);
     }
+
+    
 }
