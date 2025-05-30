@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var app\models\ProjectSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Projects';
+$this->title = 'Проєкти';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="project-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Project', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Створити проєкт', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -48,8 +48,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'private:boolean',
             'archive:boolean',
             //'code',
-            //'create',
-            //'update',
+            // 'create',
+            [
+                'attribute' => 'update',
+                'format' => ['date', 'php:Y-m-d H:i:s'],
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Project $model, $key, $index, $column) {

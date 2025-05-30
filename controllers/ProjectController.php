@@ -18,17 +18,30 @@ class ProjectController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'], // Only authenticated users
+                        'matchCallback' => function ($rule, $action) {
+                            $user = \Yii::$app->user->identity;
+                            return $user && $user->isAdmin(); // Only allow admins
+                        },
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view'], // Allow all authenticated users to view projects
+                        'roles' => ['@'], // Only authenticated users
+                        'matchCallback' => function ($rule, $action) {
+                            $user = \Yii::$app->user->identity;
+                            return $user && ($user->isManager() || $user->isProgrammer()); // Allow managers and developers
+                        },
+                    ]
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
     /**

@@ -50,8 +50,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             $user = Yii::$app->user->identity;
 
             if ($user->isAdmin()) {
-                $links['items'][] = ['label' => 'Користувачі', 'url' => ['/user']];
-                $links['items'][] = ['label' => 'Проекти', 'url' => ['/project']];
+                addTab($links, 'Користувачі', ['/user']);
+                addTab($links, 'Проєкти', ['/project']);
+            }
+
+            if ($user->isManager()) {
+                addTab($links, 'Проєкти', ['/project']);
             }
         }
 
@@ -99,3 +103,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 </html>
 <?php $this->endPage() ?>
+
+<?php
+function addTab(&$links, $label, $url)
+{
+    foreach ($links['items'] as $item) {
+        if ($item['label'] === $label && $item['url'] === $url) {
+            return; // вже є — не додаємо
+        }
+    }
+    $links['items'][] = ['label' => $label, 'url' => $url];
+} ?>
