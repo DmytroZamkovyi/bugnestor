@@ -16,14 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="task-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Створити завдання', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if (Yii::$app->user->identity && (Yii::$app->user->identity->isProgrammer() || Yii::$app->user->identity->isManager())): ?>
+        <p>
+            <?= Html::a('Створити завдання', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php endif; ?>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
     ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -32,6 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
+            [
+                'attribute' => 'project_id',
+                'value' => function ($model) {
+                    return $model->project ? $model->project->name : '(немає)';
+                },
+            ],
             [
                 'attribute' => 'author_id',
                 'value' => function ($model) {
@@ -68,6 +74,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
 
 </div>

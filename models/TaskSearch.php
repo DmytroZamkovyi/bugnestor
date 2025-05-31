@@ -17,7 +17,7 @@ class TaskSearch extends Task
     public function rules()
     {
         return [
-            [['id', 'author_id', 'assigned_to_id', 'status_id', 'priority_id'], 'integer'],
+            [['id', 'author_id', 'assigned_to_id', 'status_id', 'priority_id', 'project_id'], 'integer'],
             [['name', 'description', 'create', 'update'], 'safe'],
         ];
     }
@@ -64,6 +64,7 @@ class TaskSearch extends Task
             'assigned_to_id' => $this->assigned_to_id,
             'status_id' => $this->status_id,
             'priority_id' => $this->priority_id,
+            'project_id' => $this->project_id,
             'create' => $this->create,
             'update' => $this->update,
         ]);

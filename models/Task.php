@@ -43,7 +43,7 @@ class Task extends \yii\db\ActiveRecord
             [['description', 'assigned_to_id', 'status_id', 'priority_id'], 'default', 'value' => null],
             [['id', 'name', 'author_id'], 'required'],
             [['id', 'author_id', 'assigned_to_id', 'status_id', 'priority_id'], 'default', 'value' => null],
-            [['id', 'author_id', 'assigned_to_id', 'status_id', 'priority_id'], 'integer'],
+            [['id', 'author_id', 'assigned_to_id', 'status_id', 'priority_id', 'project_id'], 'integer'],
             [['description'], 'string'],
             [['create', 'update'], 'safe'],
             [['name'], 'string', 'max' => 255],
@@ -52,6 +52,7 @@ class Task extends \yii\db\ActiveRecord
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::class, 'targetAttribute' => ['status_id' => 'id']],
             [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['author_id' => 'id']],
             [['assigned_to_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['assigned_to_id' => 'id']],
+            [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Project::class, 'targetAttribute' => ['project_id' => 'id']],
         ];
     }
 
@@ -70,6 +71,7 @@ class Task extends \yii\db\ActiveRecord
             'priority_id' => 'Пріоритет',
             'create' => 'Створено',
             'update' => 'Оновлено',
+            'project_id' => 'Проєкт',
         ];
     }
 
@@ -111,6 +113,16 @@ class Task extends \yii\db\ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(Status::class, ['id' => 'status_id']);
+    }
+
+    /**
+     * Gets query for [[Project]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProject()
+    {
+        return $this->hasOne(Project::class, ['id' => 'project_id']);
     }
 
 }

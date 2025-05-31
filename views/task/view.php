@@ -14,17 +14,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="task-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php if (Yii::$app->user->identity && (Yii::$app->user->identity->isProgrammer() || Yii::$app->user->identity->isManager())): ?>
+        <p>
+            <?= Html::a('Редагувати', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Видалити', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Ви впевнені, що хочете видалити завдання? Це незворотна дія.',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </p>
+    <?php endif; ?>
 
-    <p>
-        <?= Html::a('Редагувати', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Видалити', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Ви впевнені, що хочете видалити завдання? Це незворотна дія.',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -48,8 +50,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'priority_id',
                 'value' => fn($model) => $model->priority->name ?? '(немає)',
             ],
-            'create',
-            'update',
+            [
+                'attribute' => 'create',
+                'format' => ['date', 'php:Y-m-d H:i:s'],
+            ],
+            [
+                'attribute' => 'update',
+                'format' => ['date', 'php:Y-m-d H:i:s'],
+            ]
         ],
     ]) ?>
 

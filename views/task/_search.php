@@ -19,6 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
+    <?= $form->field($model, 'project_id')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\app\models\Project::find()->all(), 'id', 'name'),
+        ['prompt' => 'Оберіть проєкт']
+    ) ?>
+
     <?= $form->field($model, 'description') ?>
 
     <?= $form->field($model, 'author_id') ?>

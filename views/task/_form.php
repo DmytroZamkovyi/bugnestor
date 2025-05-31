@@ -16,6 +16,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
+    <?= $form->field($model, 'project_id')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\app\models\Project::find()->all(), 'id', 'name'),
+        ['prompt' => 'Оберіть проєкт']
+    ) ?>
+
     <?= $form->field($model, 'assigned_to_id')->dropDownList(
         \yii\helpers\ArrayHelper::map(\app\models\User::find()->all(), 'id', 'username'),
         ['prompt' => 'Оберіть робітника']
