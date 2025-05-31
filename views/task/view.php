@@ -27,6 +27,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
     <?php endif; ?>
 
+    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isProgrammer()): ?>
+        <p>
+            <?= Html::a('Додати час', ['timetracker/create', 'task_id' => $model->id], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php endif; ?>
+
 
     <?= DetailView::widget([
         'model' => $model,
@@ -60,5 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ],
     ]) ?>
+
+
 
 </div>

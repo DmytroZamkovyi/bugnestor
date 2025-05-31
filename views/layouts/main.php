@@ -63,6 +63,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             if ($user->isProgrammer()) {
                 addTab($links, 'Завдання', ['/task']);
                 addTab($links, 'Проблеми', ['/issue']);
+                addTab($links, 'Звіт', ['/timetracker/report']);
             }
         }
 
