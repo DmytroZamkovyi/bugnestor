@@ -43,7 +43,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Task $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                },
+                'visibleButtons' => [
+                    'view' => function ($model) {
+                        return Yii::$app->user->can('viewTask', ['task' => $model]);
+                    },
+                    'update' => function ($model) {
+                        return Yii::$app->user->can('updateTask', ['task' => $model]);
+                    },
+                    'delete' => function ($model) {
+                        return Yii::$app->user->can('deleteTask', ['task' => $model]);
+                    },
+                ],
             ],
         ],
     ]); ?>
