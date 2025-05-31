@@ -56,6 +56,11 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
             if ($user->isManager()) {
                 addTab($links, 'Проєкти', ['/project']);
+                addTab($links, 'Завдання', ['/task']);
+            }
+
+            if ($user->isProgrammer()) {
+                addTab($links, 'Завдання', ['/task']);
             }
         }
 
