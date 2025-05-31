@@ -57,10 +57,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             if ($user->isManager()) {
                 addTab($links, 'Проєкти', ['/project']);
                 addTab($links, 'Завдання', ['/task']);
+                addTab($links, 'Проблеми', ['/issue']);
             }
 
             if ($user->isProgrammer()) {
                 addTab($links, 'Завдання', ['/task']);
+                addTab($links, 'Проблеми', ['/issue']);
             }
         }
 
@@ -71,8 +73,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 'linkOptions' => ['data-method' => 'post']
             ];
         } else {
-            $links['items']['issues'] = ['label' => 'Проблеми', 'url' => ['/issues']];
-            $links['items'][] = ['label' => 'Увійти', 'url' => ['/site/login']];
+            addTab($links, 'Проблеми', ['/issue']);
+            addTab($links, 'Увійти', ['/site/login']);
         }
 
         echo Nav::widget($links);
