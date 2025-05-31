@@ -62,14 +62,14 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'author_id' => 'Author ID',
-            'assigned_to_id' => 'Assigned To ID',
-            'status_id' => 'Status ID',
-            'priority_id' => 'Priority ID',
-            'create' => 'Create',
-            'update' => 'Update',
+            'name' => 'Назва',
+            'description' => 'Опис',
+            'author_id' => 'Автор',
+            'assigned_to_id' => 'Призначено',
+            'status_id' => 'Статус',
+            'priority_id' => 'Пріоритет',
+            'create' => 'Створено',
+            'update' => 'Оновлено',
         ];
     }
 

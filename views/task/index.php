@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var app\models\TaskSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Tasks';
+$this->title = 'Завдання';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="task-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Task', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Створити завдання', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
@@ -32,29 +32,39 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'description:ntext',
-            'author_id',
-            'assigned_to_id',
-            'status_id',
-            'priority_id',
-            //'create',
-            //'update',
+            [
+                'attribute' => 'author_id',
+                'value' => function ($model) {
+                    return $model->author ? $model->author->username : '(немає)';
+                },
+            ],
+            [
+                'attribute' => 'assigned_to_id',
+                'value' => function ($model) {
+                    return $model->assignedTo ? $model->assignedTo->username : '(немає)';
+                },
+            ],
+            [
+                'attribute' => 'status_id',
+                'value' => function ($model) {
+                    return $model->status ? $model->status->name : '(немає)';
+                },
+            ],
+            [
+                'attribute' => 'priority_id',
+                'value' => function ($model) {
+                    return $model->priority ? $model->priority->name : '(немає)';
+                },
+            ],
+            [
+                'attribute' => 'update',
+                'format' => ['date', 'php:Y-m-d H:i:s'],
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Task $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 },
-                'visibleButtons' => [
-                    'view' => function ($model) {
-                        return Yii::$app->user->can('viewTask', ['task' => $model]);
-                    },
-                    'update' => function ($model) {
-                        return Yii::$app->user->can('updateTask', ['task' => $model]);
-                    },
-                    'delete' => function ($model) {
-                        return Yii::$app->user->can('deleteTask', ['task' => $model]);
-                    },
-                ],
             ],
         ],
     ]); ?>

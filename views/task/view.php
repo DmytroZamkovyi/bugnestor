@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var app\models\Task $model */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Завдання', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Редагувати', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Видалити', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Ви впевнені, що хочете видалити завдання? Це незворотна дія.',
                 'method' => 'post',
             ],
         ]) ?>
@@ -32,10 +32,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'description:ntext',
-            'author_id',
-            'assigned_to_id',
-            'status_id',
-            'priority_id',
+            [
+                'attribute' => 'author_id',
+                'value' => fn($model) => $model->author->username ?? '(невідомо)',
+            ],
+            [
+                'attribute' => 'assigned_to_id',
+                'value' => fn($model) => $model->assignedTo->username ?? '(немає)',
+            ],
+            [
+                'attribute' => 'status_id',
+                'value' => fn($model) => $model->status->name ?? '(немає)',
+            ],
+            [
+                'attribute' => 'priority_id',
+                'value' => fn($model) => $model->priority->name ?? '(немає)',
+            ],
             'create',
             'update',
         ],

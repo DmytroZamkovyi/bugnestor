@@ -12,26 +12,27 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
-
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'author_id')->textInput() ?>
+    <?= $form->field($model, 'assigned_to_id')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\app\models\User::find()->all(), 'id', 'username'),
+        ['prompt' => 'Оберіть робітника']
+    ) ?>
 
-    <?= $form->field($model, 'assigned_to_id')->textInput() ?>
+    <?= $form->field($model, 'status_id')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\app\models\Status::find()->all(), 'id', 'name'),
+        ['prompt' => 'Оберіть статус']
+    )  ?>
 
-    <?= $form->field($model, 'status_id')->textInput() ?>
-
-    <?= $form->field($model, 'priority_id')->textInput() ?>
-
-    <?= $form->field($model, 'create')->textInput() ?>
-
-    <?= $form->field($model, 'update')->textInput() ?>
+    <?= $form->field($model, 'priority_id')->dropDownList(
+        \yii\helpers\ArrayHelper::map(\app\models\Priority::find()->all(), 'id', 'name'),
+        ['prompt' => 'Оберіть пріоритет']
+    )   ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Зберегти', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

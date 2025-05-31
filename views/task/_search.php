@@ -25,13 +25,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'assigned_to_id') ?>
 
-    <?php // echo $form->field($model, 'status_id') ?>
+    <?= $form->field($model, 'status_id') ?>
 
-    <?php // echo $form->field($model, 'priority_id') ?>
+    <?= $form->field($model, 'priority_id') ?>
 
-    <?php // echo $form->field($model, 'create') ?>
-
-    <?php // echo $form->field($model, 'update') ?>
+    <?= $form->field($model, 'update') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
