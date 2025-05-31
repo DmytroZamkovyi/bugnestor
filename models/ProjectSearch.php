@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Project;
+use Yii;
 
 /**
  * ProjectSearch represents the model behind the search form of `app\models\Project`.
@@ -42,7 +43,7 @@ class ProjectSearch extends Project
      */
     public function search($params, $formName = null)
     {
-        $query = Project::find();
+        $query = Project::getAccessibleProjects(Yii::$app->user->identity);
 
         // add conditions that should always apply here
 

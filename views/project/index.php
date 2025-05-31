@@ -16,16 +16,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="project-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Створити проєкт', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isAdmin()): ?>
+        <p>
+            <?= Html::a('Створити проєкт', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php endif; ?>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'summary' => 'Показано {begin}–{end} з {totalCount} записів',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -57,8 +59,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Project $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                },
+                'visibleButtons' => [
+                    'update' => function ($model, $key, $index) {
+                        return Yii::$app->user->identity->isAdmin();
+                    },
+                    'delete' => function ($model, $key, $index) {
+                        return Yii::$app->user->identity->isAdmin();
+                    },
+                ],
             ],
+
         ],
     ]); ?>
 

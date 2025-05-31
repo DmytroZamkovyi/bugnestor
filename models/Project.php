@@ -103,7 +103,7 @@ class Project extends \yii\db\ActiveRecord
      */
     public function getProjectUsers()
     {
-        return $this->hasMany(ProjectUser::class, ['project_id' => 'id']);
+        return $this->hasMany(ProjectUser::class, ['project_id' => 'id'])->with('user');
     }
 
     /**
@@ -116,4 +116,21 @@ class Project extends \yii\db\ActiveRecord
         return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('project_user', ['project_id' => 'id']);
     }
 
+
+    /**
+     * Returns a list of projects accessible to the given user.
+     *
+     * @param User $user The user for whom to retrieve accessible projects.
+     * @return \yii\db\ActiveQuery The query object for the accessible projects.
+     */
+    public static function getAccessibleProjects($user)
+    {
+        if ($user->isAdmin()) {
+            return self::find();
+        }
+
+        return self::find()
+            ->joinWith('projectUsers')
+            ->where(['project_user.user_id' => $user->id]);
+    }
 }

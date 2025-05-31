@@ -73,9 +73,38 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     <?php endif; ?>
 
+    <?php if (Yii::$app->user->identity->isAdmin()): ?>
+        <div class="card mt-4">
+            <div class="card-header">
+                <strong>Користувачі, які мають доступ</strong>
+                <?= Html::a('Додати користувача', ['project-user/create', 'project_id' => $model->id], ['class' => 'btn btn-success btn-sm float-end']) ?>
+            </div>
+            <div class="card-body p-2">
+                <ul class="list-group">
+                    <?php foreach ($model->projectUsers as $projectUser): ?>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <?= Html::encode($projectUser->user->username) ?>
+                            <div>
+                                <?php if ($projectUser->view_only): ?>
+                                    <span class="badge bg-secondary">Глядач</span>
+                                <?php endif; ?>
+                                <?= Html::a('Видалити', ['project-user/delete', 'project_id' => $model->id, 'user_id' => $projectUser->user_id], [
+                                    'class' => 'btn btn-danger btn-sm',
+                                    'data' => [
+                                        'confirm' => 'Ви впевнені, що хочете видалити користувача?',
+                                        'method' => 'post',
+                                    ],
+                                ]) ?>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <p>
         <?= Html::encode($model->description) ?>
     </p>
-
 
 </div>
