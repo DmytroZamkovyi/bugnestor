@@ -91,12 +91,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     public function getAuthKey()
     {
-        return null; // або $this->auth_key якщо додаси поле
+        return null;
     }
 
     public function validateAuthKey($authKey)
     {
-        return false; // або порівняння з $this->auth_key
+        return false;
     }
 
     public function validatePassword($password)
