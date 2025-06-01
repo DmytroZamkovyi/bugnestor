@@ -17,6 +17,9 @@ use Yii;
  * @property bool|null $admin Чи адмін
  * @property bool|null $manager Чи менеджер
  * @property bool|null $programmer Чи програміст
+ * @method isAdmin()
+ * @method isManager()
+ * @method isProgrammer()
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {

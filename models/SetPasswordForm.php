@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\base\Model;
+use Yii;
 
 class SetPasswordForm extends Model
 {
@@ -22,7 +23,9 @@ class SetPasswordForm extends Model
     {
         $ip = \Yii::$app->request->userIP;
         $time = microtime(true);
-        $username = \Yii::$app->user->identity->username;
+        /** @var \app\models\User $user */
+        $user = Yii::$app->user->identity;
+        $username = $user->username;
         return md5($ip . $time . $username);
     }
 

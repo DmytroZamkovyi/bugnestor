@@ -12,11 +12,14 @@ use yii\grid\GridView;
 
 $this->title = 'Проєкти';
 $this->params['breadcrumbs'][] = $this->title;
+
+/** @var \app\models\User $user */
+$user = Yii::$app->user->identity;
 ?>
 <div class="project-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isAdmin()): ?>
+    <?php if ($user && $user->isAdmin()): ?>
         <p>
             <?= Html::a('Створити проєкт', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
@@ -61,11 +64,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Url::toRoute([$action, 'id' => $model->id]);
                 },
                 'visibleButtons' => [
-                    'update' => function ($model, $key, $index) {
-                        return Yii::$app->user->identity->isAdmin();
+                    'update' => function ($model, $key, $index) use ($user) {
+                        return $user->isAdmin();
                     },
-                    'delete' => function ($model, $key, $index) {
-                        return Yii::$app->user->identity->isAdmin();
+                    'delete' => function ($model, $key, $index) use ($user) {
+                        return $user->isAdmin();
                     },
                 ],
             ],

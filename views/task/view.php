@@ -14,7 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="task-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if (Yii::$app->user->identity && (Yii::$app->user->identity->isProgrammer() || Yii::$app->user->identity->isManager())): ?>
+    <?php
+    /** @var \app\models\User $user */
+    $user = Yii::$app->user->identity;
+    if ($user && ($user->isProgrammer() || $user->isManager())): ?>
         <p>
             <?= Html::a('Редагувати', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Видалити', ['delete', 'id' => $model->id], [
@@ -27,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
     <?php endif; ?>
 
-    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isProgrammer()): ?>
+    <?php if ($user && $user->isProgrammer()): ?>
         <p>
             <?= Html::a('Додати час', ['timetracker/create', 'task_id' => $model->id], ['class' => 'btn btn-success']) ?>
         </p>

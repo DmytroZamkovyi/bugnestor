@@ -10,6 +10,7 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
+/** @phpstan-ignore-next-line */
 AppAsset::register($this);
 
 $this->registerCsrfMetaTags();
@@ -18,6 +19,9 @@ $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, 
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
 $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
+
+/** @var \app\models\User $user */
+$user = Yii::$app->user->identity;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -47,8 +51,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         ];
 
         if (!Yii::$app->user->isGuest) {
-            $user = Yii::$app->user->identity;
-
             if ($user->isAdmin()) {
                 addTab($links, 'Користувачі', ['/user']);
                 addTab($links, 'Проєкти', ['/project']);
@@ -69,7 +71,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
         if (!Yii::$app->user->isGuest) {
             $links['items'][] = [
-                'label' => 'Вийти (' . Yii::$app->user->identity->username . ')',
+                'label' => 'Вийти (' . $user->username . ')',
                 'url' => ['/site/logout'],
                 'linkOptions' => ['data-method' => 'post']
             ];
@@ -91,7 +93,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     'links' => $this->params['breadcrumbs'],
                 ]) ?>
             <?php endif ?>
-            <?= Alert::widget() ?>
+            <?=
+            /** @phpstan-ignore-next-line */
+            Alert::widget() ?>
             <?= $content ?>
         </div>
     </main>

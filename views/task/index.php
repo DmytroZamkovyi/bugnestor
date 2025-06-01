@@ -12,11 +12,14 @@ use yii\grid\GridView;
 
 $this->title = 'Завдання';
 $this->params['breadcrumbs'][] = $this->title;
+
+/** @var \app\models\User $user */
+$user = Yii::$app->user->identity;
 ?>
 <div class="task-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if (Yii::$app->user->identity && (Yii::$app->user->identity->isProgrammer() || Yii::$app->user->identity->isManager())): ?>
+    <?php if ($user && ($user->isProgrammer() || $user->isManager())): ?>
         <p>
             <?= Html::a('Створити завдання', ['create'], ['class' => 'btn btn-success']) ?>
         </p>

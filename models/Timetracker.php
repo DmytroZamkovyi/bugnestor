@@ -11,6 +11,7 @@ use Yii;
  * @property int $user_id
  * @property string $time
  * @property string $date
+ * @property int|null $task_id
  *
  * @property User $user
  */

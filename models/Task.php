@@ -14,6 +14,7 @@ use Yii;
  * @property int|null $assigned_to_id
  * @property int|null $status_id
  * @property int|null $priority_id
+ * @property int|null $project_id
  * @property string $create
  * @property string $update
  *

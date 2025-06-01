@@ -10,12 +10,15 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Пробелеми', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+/** @var \app\models\User $user */
+$user = Yii::$app->user->identity;
 ?>
 <div class="issue-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if (Yii::$app->user->identity && (Yii::$app->user->identity->isManager() || Yii::$app->user->identity->isProgrammer())): ?>
+    <?php if ($user && ($user->isManager() || $user->isProgrammer())): ?>
         <p>
             <?= Html::a('Редагувати', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Видалити', ['delete', 'id' => $model->id], [

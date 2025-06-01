@@ -6,7 +6,7 @@ use app\models\Project;
 use app\models\ProjectSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * ProjectController implements the CRUD actions for Project model.
@@ -26,6 +26,7 @@ class ProjectController extends Controller
                         'allow' => true,
                         'roles' => ['@'], // Only authenticated users
                         'matchCallback' => function ($rule, $action) {
+                            /** @var \app\models\User|null $user */
                             $user = \Yii::$app->user->identity;
                             return $user && $user->isAdmin(); // Only allow admins
                         },
@@ -35,6 +36,7 @@ class ProjectController extends Controller
                         'actions' => ['index', 'view'], // Allow all authenticated users to view projects
                         'roles' => ['@'], // Only authenticated users
                         'matchCallback' => function ($rule, $action) {
+                            /** @var \app\models\User|null $user */
                             $user = \Yii::$app->user->identity;
                             return $user && ($user->isManager() || $user->isProgrammer()); // Allow managers and developers
                         },

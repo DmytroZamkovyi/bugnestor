@@ -26,7 +26,8 @@ class UserController extends Controller
                         'allow' => true,
                         'roles' => ['@'], // Only authenticated users
                         'matchCallback' => function ($rule, $action) {
-                            $user = \Yii::$app->user->identity;
+                            /** @var \app\models\User $user */
+                            $user = Yii::$app->user->identity;
                             return $user && $user->isAdmin(); // Only allow admins
                         },
                     ],

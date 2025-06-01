@@ -32,6 +32,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            /** @var \app\models\User $user */
             $user = Yii::$app->user->identity;
 
             if ($user->new) {
@@ -62,6 +63,7 @@ class SiteController extends Controller
 
     public function actionSetPassword()
     {
+        /** @var \app\models\User $user */
         $user = Yii::$app->user->identity;
 
         if (!$user->new) {

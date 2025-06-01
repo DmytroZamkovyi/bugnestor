@@ -3,6 +3,13 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+/**
+ * @var \app\models\TimetrackerSearch $searchModel
+ * @var string|null $date_from
+ * @var string|null $date_to
+ * @var \yii\data\DataProviderInterface $dataProvider
+ */
+
 ?>
 
 <h2>Звіт по задачах</h2>

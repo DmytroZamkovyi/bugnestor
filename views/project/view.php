@@ -11,6 +11,9 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Проєкти', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+/** @var \app\models\User $user */
+$user = Yii::$app->user->identity;
 ?>
 <div class="project-view">
     <style>
@@ -39,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif; ?>
     </h1>
 
-    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isAdmin()): ?>
+    <?php if ($user && $user->isAdmin()): ?>
         <p>
             <?= Html::a('Редагувати', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a('Видалити', ['delete', 'id' => $model->id], [
@@ -51,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
         </p>
     <?php endif; ?>
-    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isAdmin()): ?>
+    <?php if ($user && $user->isAdmin()): ?>
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
@@ -73,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     <?php endif; ?>
 
-    <?php if (Yii::$app->user->identity->isAdmin()): ?>
+    <?php if ($user->isAdmin()): ?>
         <div class="card mt-4">
             <div class="card-header">
                 <strong>Користувачі, які мають доступ</strong>
