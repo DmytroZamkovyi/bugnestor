@@ -24,21 +24,21 @@ class ProjectController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'], // Only authenticated users
+                        'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             /** @var \app\models\User|null $user */
                             $user = \Yii::$app->user->identity;
-                            return $user && $user->isAdmin(); // Only allow admins
+                            return $user && $user->isAdmin();
                         },
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'], // Allow all authenticated users to view projects
-                        'roles' => ['@'], // Only authenticated users
+                        'actions' => ['index', 'view'],
+                        'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                             /** @var \app\models\User|null $user */
                             $user = \Yii::$app->user->identity;
-                            return $user && ($user->isManager() || $user->isProgrammer()); // Allow managers and developers
+                            return $user && ($user->isManager() || $user->isProgrammer());
                         },
                     ]
                 ],

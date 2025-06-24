@@ -43,7 +43,7 @@ class Project extends \yii\db\ActiveRecord
                 'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'create',
                 'updatedAtAttribute' => 'update',
-                'value' => new Expression('NOW()'), // ← PostgreSQL сумісно
+                'value' => new Expression('NOW()'),
             ],
         ];
     }

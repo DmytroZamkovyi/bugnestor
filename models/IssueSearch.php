@@ -43,8 +43,6 @@ class IssueSearch extends Issue
     {
         $query = Issue::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
